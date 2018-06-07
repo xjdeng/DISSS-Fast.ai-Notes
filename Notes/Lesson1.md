@@ -44,5 +44,7 @@ probs = np.exp(log_preds[:,1])        # pr(dog)
 ## Finding a Learning Rate
 
 Basic method (first run this): ```learn.lr_find()```
+
 Graph of Learning Rate vs # of Iterations: ```learn.sched.plot_lr()```
+
 Graph of Learning Rate vs Loss: ```learn.sched.plot()```
