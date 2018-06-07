@@ -21,7 +21,7 @@ learn.fit(0.01, 2)
     - Example: ```data/dogscats/train/cat``` and ```data/dogscats/valid/dog```
 - **sz**: size that the images should be resized to.  For now, set ```sz = 224```.
 - **Learning Rate**: set to 0.01 here. Will go over how to find an optimal rate later.
-- **Epochs**: # of times to train the model, set to 2 here.
+- **Epochs**: # of times to train the model, set to 2 here. Too many epochs leads to overfitting and will take a long time.
 
 ### Image Classifier Output:
 
@@ -39,3 +39,10 @@ log_preds = learn.predict()
 preds = np.argmax(log_preds, axis=1)  # from log probabilities to 0 or 1
 probs = np.exp(log_preds[:,1])        # pr(dog)
 ```
+&nbsp;
+&nbsp;
+## Finding a Learning Rate
+
+Basic method (first run this): ```learn.lr_find()```
+Graph of Learning Rate vs # of Iterations: ```learn.sched.plot_lr()```
+Graph of Learning Rate vs Loss: ```learn.sched.plot()```
