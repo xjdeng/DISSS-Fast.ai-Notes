@@ -22,3 +22,20 @@ learn.fit(0.01, 2)
 - **sz**: size that the images should be resized to.  For now, set ```sz = 224```.
 - **Learning Rate**: set to 0.01 here. Will go over how to find an optimal rate later.
 - **Epochs**: # of times to train the model, set to 2 here.
+
+### Image Classifier Output:
+
+```
+epoch      trn_loss   val_loss   accuracy                                                                              
+    0      0.042222   0.028351   0.991211  
+    1      0.035367   0.026421   0.991211  
+```
+
+### Make Predictions:
+
+Note: learn.predict() only returns the logs of the predictions on the **validation** set.
+```
+log_preds = learn.predict()
+preds = np.argmax(log_preds, axis=1)  # from log probabilities to 0 or 1
+probs = np.exp(log_preds[:,1])        # pr(dog)
+```
