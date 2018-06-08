@@ -1,4 +1,4 @@
-# Lesson 1 Notes: Dogs and Cats
+# Lesson 1 Notes: Basic Image Recognition
 
 [[Lecture Video](http://course.fast.ai/lessons/lesson1.html)] [[IPython Notebook](https://github.com/fastai/fastai/blob/master/courses/dl1/lesson1.ipynb)]
 
