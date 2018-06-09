@@ -76,12 +76,12 @@ Note: transforms_on_side only flips the images left or right
 - Good for cats/dogs
 - Don't do this for, say, letters, since their meanings will change when flipped
 
-### Pretrained Layers (precomute = true)
+## Pretrained Layers (precomute = true)
 
 [[Video (Lesson 2 @ 25:50)](https://youtu.be/JNxcznsrRb8?t=25m50s)]  
 
 - By default when we create a learner, it sets all but the last layer to frozen. That means that it's still only updating the weights in the last layer when we call fit.
-- Need to set ```learn.precompute=False``` later
+- Need to set ```learn.precompute=False``` later for data augmentation to work
 
 ```
 learn.fit(1e-2, 1)
@@ -89,9 +89,30 @@ learn.precompute=False
 learn.fit(1e-2, 3, cycle_len=1)
 ```
 
-### Cycle Length
+
+## Cycle Length
 
 [[Video (Lesson 2 @ 30:18)](https://youtu.be/JNxcznsrRb8?t=30m18s)]  
 - What is that cycle_len parameter? What we've done here is used a technique called stochastic gradient descent with restarts (SGDR), a variant of learning rate annealing, which gradually decreases the learning rate as training progresses. This is helpful because as we get closer to the optimal weights, we want to take smaller steps.
 - However, we may find ourselves in a part of the weight space that isn't very resilient - that is, small changes to the weights may result in big changes to the loss. We want to encourage our model to find parts of the weight space that are both accurate and stable. Therefore, from time to time we increase the learning rate (this is the 'restarts' in 'SGDR'), which will force the model to jump to a different part of the weight space if the current area is "spikey".
 - The number of epochs between resetting the learning rate is set by cycle_len, and the number of times this happens is refered to as the number of cycles, and is what we're actually passing as the 2nd parameter to fit().
+
+## Fine Tuning
+
+- By default, all layers except the final one are frozn.  To unfreeze frozen layers, use ```learn.unfreeze()```
+- Differential learning rates
+    - ```lr=np.array([1e-4,1e-3,1e-2])```
+    - Generally speaking, the earlier layers (as we've seen) have more general-purpose features. Therefore we would expect them to need less fine-tuning for new datasets. For this reason we will use different learning rates for different layers: the first few layers will be at 1e-4, the middle layers at 1e-3, and our FC layers we'll leave at 1e-2 as before. We refer to this as differential learning rates.
+- ```learn.fit(lr, 3, cycle_len=1, cycle_mult=2)```: Actually, this is 3\*cycle_len\*cycle_mult epochs.
+
+# Summary: How to create a world-class image classifier:
+
+[[Video (Lesson 2 @ 1:13:53)](https://youtu.be/JNxcznsrRb8?t=1h13m53s)]  
+- Enable data augmentation, and precompute=True
+- Use lr_find() to find highest learning rate where loss is still clearly improving
+- Train last layer from precomputed activations for 1-2 epochs
+- Train last layer with data augmentation (i.e. precompute=False) for 2-3 epochs with cycle_len=1
+- Unfreeze all layers
+- Set earlier layers to 3x-10x lower learning rate than next higher layer
+- Use lr_find() again
+- Train full network with cycle_mult=2 until over-fitting
