@@ -71,3 +71,7 @@ data = ImageClassifierData.from_paths(PATH, tfms=tfms)
 learn = ConvLearner.pretrained(arch, data, precompute=True)
 learn.fit(1e-2, 1) #Learning rate and epochs can change if you like
 ```
+
+Note: transforms_on_side only flips the images left or right
+- Good for cats/dogs
+- Don't do this for, say, letters, since their meanings will change when flipped
