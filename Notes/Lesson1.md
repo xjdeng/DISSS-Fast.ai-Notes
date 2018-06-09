@@ -1,4 +1,5 @@
 # Lesson 1 Notes: Basic Image Recognition
+[[Lecture Video 1](http://course.fast.ai/lessons/lesson1.html)] [[Lecture Video 2](http://course.fast.ai/lessons/lesson2.html)][[IPython Notebook](https://github.com/fastai/fastai/blob/master/courses/dl1/lesson1.ipynb)]  
 
 ## Required Fast.ai headers
 
@@ -11,8 +12,6 @@ from fastai.dataset import *
 from fastai.sgdr import *
 from fastai.plots import *
 ```
-
-[[Lecture Video 1](http://course.fast.ai/lessons/lesson1.html)] [[Lecture Video 2](http://course.fast.ai/lessons/lesson2.html)][[IPython Notebook](https://github.com/fastai/fastai/blob/master/courses/dl1/lesson1.ipynb)]
 
 ## A Basic Image Classifier
 [[Video (Lesson 1 @ 20:28)](https://youtu.be/IPBSB1HLNLo?t=20m28s)]
