@@ -68,10 +68,30 @@ Increase the size of your dataset by flipping, rotating, zooming, etc. your imag
 ```
 tfms = tfms_from_model(resnet34, sz, aug_tfms=transforms_side_on, max_zoom=1.1)
 data = ImageClassifierData.from_paths(PATH, tfms=tfms)
-learn = ConvLearner.pretrained(arch, data, precompute=True)
+learn = ConvLearner.pretrained(arch, data, precompute=True) #Need to set it false later
 learn.fit(1e-2, 1) #Learning rate and epochs can change if you like
 ```
 
 Note: transforms_on_side only flips the images left or right
 - Good for cats/dogs
 - Don't do this for, say, letters, since their meanings will change when flipped
+
+### Pretrained Layers (precomute = true)
+
+[[Video (Lesson 2 @ 25:50)](https://youtu.be/JNxcznsrRb8?t=25m50s)]  
+
+- By default when we create a learner, it sets all but the last layer to frozen. That means that it's still only updating the weights in the last layer when we call fit.
+- Need to set ```learn.precompute=False``` later
+
+```
+learn.fit(1e-2, 1)
+learn.precompute=False
+learn.fit(1e-2, 3, cycle_len=1)
+```
+
+### Cycle Length
+
+[[Video (Lesson 2 @ 30:18)](https://youtu.be/JNxcznsrRb8?t=30m18s)]  
+- What is that cycle_len parameter? What we've done here is used a technique called stochastic gradient descent with restarts (SGDR), a variant of learning rate annealing, which gradually decreases the learning rate as training progresses. This is helpful because as we get closer to the optimal weights, we want to take smaller steps.
+- However, we may find ourselves in a part of the weight space that isn't very resilient - that is, small changes to the weights may result in big changes to the loss. We want to encourage our model to find parts of the weight space that are both accurate and stable. Therefore, from time to time we increase the learning rate (this is the 'restarts' in 'SGDR'), which will force the model to jump to a different part of the weight space if the current area is "spikey".
+- The number of epochs between resetting the learning rate is set by cycle_len, and the number of times this happens is refered to as the number of cycles, and is what we're actually passing as the 2nd parameter to fit().
