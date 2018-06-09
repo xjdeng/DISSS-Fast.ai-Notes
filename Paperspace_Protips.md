@@ -4,7 +4,7 @@ In order to speed up GPU computations, I've paid for a [Paperspace](http://www.p
 
 ## Run your Jupyter Notebook server in the background
 
-This ensures that your computations will continue. If you don't do this and your terminal crashes, you might need to start all over again in running your Jupyter Notebook.
+This ensures that your computations will continue. If you don't do this and your terminal crashes, you might need to start all over again in running your Jupyter Notebook.  
 
 - Step 1: First, run jupyter notebook in the background using nohup and output it to a log: ```nohup jupyter notebook > jupyter.log &```
 - Step 2: Next, read the log and copy the token: ```cat jupyter.log```
@@ -22,3 +22,12 @@ model.fit(X,Y)
 Audio(url="sound.wav", autoplay=True)
 ```
 For more information on the [Audio module, see here](https://musicinformationretrieval.com/ipython_audio.html).
+
+## Edit files with a graphical editor: Jupyter Lab
+You already know how to edit Jupyter Notebooks hosted on your Paperspace instance but did you know you can also edit other text files? Enter [Jupyter Lab](https://github.com/jupyterlab/jupyterlab) which also includes basic IDE features like syntax highlighting.  With this, you no longer have to move files back and forth between your computer and your Paperspace instance if you want to edit files using a graphical interface and not vi, emacs, nano, etc.  
+
+- Step 1: Install Jupyter Lab if you don't already have it: ```conda install -c conda-forge jupyterlab```
+- Step 2: Run Jupyter Lab in the background (just like with Jupyter Notebook): ```nohup jupyter lab > jupyter.lab &```
+- Step 3: Find the token in the log file: ```cat jupyter.lab```
+- Step 4: Then, open a browser to http://<your Paperspace instance's ip>:8888
+- Step 5: You'll see a field asking for a token. Paste the token from step 3 there.
