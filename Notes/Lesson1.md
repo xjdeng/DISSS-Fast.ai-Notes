@@ -59,3 +59,15 @@ Graph of Learning Rate vs # of Iterations: ```learn.sched.plot_lr()```[[Video (L
 - Note: pick a learning rate slightly to the left of the lowest point.  
 
 Graph of Learning Rate vs Loss: ```learn.sched.plot()```  
+
+## Data Augmentation
+[[Video (Lesson 2 @ 15:49)](https://youtu.be/JNxcznsrRb8?t=15m49s)]  
+
+Increase the size of your dataset by flipping, rotating, zooming, etc. your images
+
+```
+tfms = tfms_from_model(resnet34, sz, aug_tfms=transforms_side_on, max_zoom=1.1)
+data = ImageClassifierData.from_paths(PATH, tfms=tfms)
+learn = ConvLearner.pretrained(arch, data, precompute=True)
+learn.fit(1e-2, 1) #Learning rate and epochs can change if you like
+```
