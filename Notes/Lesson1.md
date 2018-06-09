@@ -20,8 +20,8 @@ learn.fit(0.01, 2)
     - Each subdirectory needs a folder holding images of a respective class named that class.
     - Example: ```data/dogscats/train/cat``` and ```data/dogscats/valid/dog```
 - **sz**: size that the images should be resized to.  For now, set ```sz = 224```.
-- **Learning Rate**: set to 0.01 here. Will go over how to find an optimal rate later.
-- **Epochs**: # of times to train the model, set to 2 here. Too many epochs leads to overfitting and will take a long time.
+- **Learning Rate**: set to 0.01 here. Will go over how to find an optimal rate later. See section below
+- **Epochs**: # of times to train the model, set to 2 here. Too many epochs leads to overfitting and will take a long time. See: [[Video (Lesson 1 @ 1:18:46)](https://youtu.be/IPBSB1HLNLo?t=1h18m46s)]
 
 ### Image Classifier Output:
 
