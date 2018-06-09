@@ -116,3 +116,15 @@ learn.fit(1e-2, 3, cycle_len=1)
 - Set earlier layers to 3x-10x lower learning rate than next higher layer
 - Use lr_find() again
 - Train full network with cycle_mult=2 until over-fitting
+
+## Summary (Lazy Version):
+
+[[Video (Lesson 2 @ 1:42:37)](https://youtu.be/JNxcznsrRb8?t=1h42m37s)]  
+- ~~Enable data augmentation, and precompute=True~~
+- Use lr_find() to find highest learning rate where loss is still clearly improving
+- ~~Train last layer from precomputed activations for 1-2 epochs~~
+- Train last layer with data augmentation (i.e. precompute=False) for 2-3 epochs with cycle_len=1
+- Unfreeze all layers
+- Set earlier layers to 3x-10x lower learning rate than next higher layer
+- ~~Use lr_find() again~~
+- Train full network with cycle_mult=2 until over-fitting
