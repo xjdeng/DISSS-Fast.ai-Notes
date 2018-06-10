@@ -30,3 +30,11 @@ Each image can have multiple labels, so we can't use the Keras style of putting 
 | train_4    | agriculture clear habitation primary road |
 | train_5    | haze primary water                        |
 
+Corresponding Code:
+
+```
+def get_data(sz):
+    tfms = tfms_from_model(f_model, sz, aug_tfms=transforms_top_down, max_zoom=1.05)
+    return ImageClassifierData.from_csv(PATH, 'train-jpg', label_csv, tfms=tfms,
+                    suffix='.jpg', val_idxs=val_idxs, test_name='test-jpg')
+```
