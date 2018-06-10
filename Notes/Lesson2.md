@@ -2,6 +2,8 @@
 
 [[Lecture 3 Video](http://course.fast.ai/lessons/lesson3.html)] [[IPython Notebook](https://github.com/fastai/fastai/blob/master/courses/dl1/lesson2-image_models.ipynb)]
 
+This one mainly builds on the [first lesson](https://github.com/xjdeng/DISSS-Fast.ai-Notes/blob/master/Notes/Lesson1.md) (single label classification).
+
 ## Required Imports
 
 ```
