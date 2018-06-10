@@ -56,3 +56,11 @@ x,y = next(iter(data.val_dl))
 See Pytorch's [Datasets and Dataloaders](https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/pytorch/dataloader-and-datasets.html)
 
 Basically, Datasets have individual images and Dataloaders are a minibatch.
+
+## Resizing Images
+
+[[Lesson 3 @ 1:39:55](https://youtu.be/9C06ZPF8Uuc?t=1h39m55s)]
+
+```data = data.resize(int(sz*1.3), 'tmp')```
+
+See the video, it saves time if you have really big images
