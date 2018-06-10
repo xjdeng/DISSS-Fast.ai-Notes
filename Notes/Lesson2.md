@@ -30,7 +30,7 @@ Each image can have multiple labels, so we can't use the Keras style of putting 
 | train_4    | agriculture clear habitation primary road |
 | train_5    | haze primary water                        |
 
-Corresponding Code:
+### Corresponding Code:
 
 ```
 from planet import f2
@@ -47,3 +47,11 @@ def get_data(sz):
     return ImageClassifierData.from_csv(PATH, 'train-jpg', label_csv, tfms=tfms,
                     suffix='.jpg', val_idxs=val_idxs, test_name='test-jpg')
 ```
+
+### Dataset vs Dataloader
+Example:
+```
+x,y = next(iter(data.val_dl))
+```
+See Pytorch's [Datasets and Dataloaders](https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/pytorch/dataloader-and-datasets.html)
+
