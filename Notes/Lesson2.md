@@ -14,3 +14,19 @@ from fastai.dataset import *
 from fastai.sgdr import *
 from fastai.plots import *
 ```
+
+## Label Format
+[[Lesson 3 @ 1:23:12](https://youtu.be/9C06ZPF8Uuc?t=1h23m12s)]
+
+Each image can have multiple labels, so we can't use the Keras style of putting each image in a folder that's named its label.  Instead, we're given a [CSV table](https://www.kaggle.com/c/6322/download/train_v2.csv.zip) like this:
+
+
+| image_name | tags                                      |
+|------------|-------------------------------------------|
+| train_0    | haze primary                              |
+| train_1    | agriculture clear primary water           |
+| train_2    | clear primary                             |
+| train_3    | clear primary                             |
+| train_4    | agriculture clear habitation primary road |
+| train_5    | haze primary water                        |
+
