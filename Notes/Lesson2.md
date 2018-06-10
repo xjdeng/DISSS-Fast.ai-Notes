@@ -55,3 +55,4 @@ x,y = next(iter(data.val_dl))
 ```
 See Pytorch's [Datasets and Dataloaders](https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/pytorch/dataloader-and-datasets.html)
 
+Basically, Datasets have individual images and Dataloaders are a minibatch.
