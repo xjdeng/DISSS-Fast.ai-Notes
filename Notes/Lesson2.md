@@ -33,6 +33,15 @@ Each image can have multiple labels, so we can't use the Keras style of putting 
 Corresponding Code:
 
 ```
+from planet import f2
+
+metrics=[f2]
+f_model = resnet34
+
+label_csvlabel_cs  = f'{PATH}train_v2.csv'
+n = len(list(open(label_csv)))-1
+val_idxs = get_cv_idxs(n)
+
 def get_data(sz):
     tfms = tfms_from_model(f_model, sz, aug_tfms=transforms_top_down, max_zoom=1.05)
     return ImageClassifierData.from_csv(PATH, 'train-jpg', label_csv, tfms=tfms,
