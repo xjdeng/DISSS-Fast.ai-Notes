@@ -128,3 +128,71 @@ learn.fit(1e-2, 3, cycle_len=1)
 - Set earlier layers to 3x-10x lower learning rate than next higher layer
 - ~~Use lr_find() again~~
 - Train full network with cycle_mult=2 until over-fitting
+
+# Bonus: Making Predictions (Not Covered in Video)
+
+Here you'll learn how to use a model you've trained to sort images in a directory by the 2 classs you've trained it on!
+
+## Saving Weights
+
+Save these weights so you don't have to retrain them each time
+
+```learn.save("model")```
+
+## Loading Weights
+
+Assuming you're opening a new notebook from scratch, 
+
+```
+arch=resnet34
+data = ImageClassifierData.from_paths(PATH, tfms=tfms_from_model(arch, sz))
+learn = ConvLearner.pretrained(arch, data, precompute=False)
+learn.fit(0.01, 2)
+```
+Note: precomute = False and PATH and sz should be the same as before!
+
+Then load the weights:
+
+```learn.load("model")```
+
+```trn_tfms, val_tfms = tfms_from_model(arch, sz)``` ([See Here](http://forums.fast.ai/t/how-do-we-use-our-model-against-a-specific-image/7661/3))
+
+Need 3 directories:
+
+1) **pred_dir**: dir with the images you want to predict
+2) **dest0***: path where images of the first class will be moved to
+3) **dest1**: path where images of the second class will be moved to
+
+```
+pred_dir = "<Insert path here>"
+dest0 = "<Insert path here>"
+dest1 = "<Insert path here>"
+```
+
+Load images and make predictions:
+
+```
+from path import Path as path
+pred_files = path(pred_dir).files()
+for f in pred_files:
+    try:
+        open_image(f)
+    except Exception:
+        f.remove()
+pred_files = path(pred_dir).files()
+ds = FilesIndexArrayDataset(pred_files, np.zeros(len(pred_files)), val_tfms, PATH)
+dl = DataLoader(ds)
+log_preds = learn.predict_dl(dl)
+preds = np.exp(log_preds)
+results = np.argmax(preds, axis=1)
+```
+
+Then copy the labeled images to their respective directories:
+
+```
+for i in range(0, len(results)):
+    if results[i] == 0:
+        pred_files[i].copy(dest0)
+    else:
+        pred_files[i].copy(dest1)
+```
