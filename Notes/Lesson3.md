@@ -104,3 +104,55 @@ Sequential(
 )
 ```
 
+## Structured and Time Series Data
+
+2 Types of variables:
+- Categorical: can take on distinct values.  Examples are Store Types, Store id's, States, etc.
+- Continuous: represented by floating point numbers. Example: temperature, price, humidity.
+- Depending on the situation, some variables like Year, Month, etc. can be treated as either continuous or categorical.
+- Floating point numbers like price are difficult to turn into categorical variable but integers like year can be treated as either.
+
+
+### Specifying the Model
+
+```
+md = ColumnarModelData.from_data_frame(PATH, val_idx, df, 
+         yl.astype(np.float32), cat_flds=cat_vars, bs=128, 
+         test_df=df_test)
+```
+**val_idx**: specifies the validation indices.  Example:
+```
+val_idx = np.flatnonzero((df.index<=datetime.datetime(2014,9,17)) &
+              (df.index>=datetime.datetime(2014,8,1)))
+```
+**df**: the independent variable (the X).  See below for how to generate this using ``proc_df()``
+
+**yl.astype(np.float32)**: Here we enter the dependent variable (the Y).  Note: yl is the log transformation of the original "Y", and astype(np.float32) transforms it to float32.
+
+**cat_flds**: specifies the categorical field names in df, your independent variable.  Example:
+```
+  cat_flds = ['Store', 'DayOfWeek', 'Year', 'Month', 'Day',
+            'StateHoliday', 'CompetitionMonthsOpen', 'Promo2Weeks',
+            'StoreType', 'Assortment', 'PromoInterval', 
+            'CompetitionOpenSinceYear', 'Promo2SinceYear', 'State',
+            'Week', 'Events', 'Promo_fw', 'Promo_bw', 
+            'StateHoliday_fw', 'StateHoliday_bw', 
+            'SchoolHoliday_fw', 'SchoolHoliday_bw']
+```
+**bs**: batch size
+
+**df_test**: also generated using ```proc_df()```
+
+#### proc_df():
+Example 1:
+```
+df, y, nas, mapper = proc_df(joined_samp, 'Sales', do_scale=True)
+yl = np.log(y)
+```
+Example 2:
+```
+df_test, _, nas, mapper = proc_df(joined_test, 'Sales', do_scale=True, skip_flds=['Id'],
+                                  mapper=mapper, na_dict=nas)
+```
+
+
