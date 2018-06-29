@@ -143,7 +143,14 @@ val_idx = np.flatnonzero((df.index<=datetime.datetime(2014,9,17)) &
 
 **df_test**: also generated using ```proc_df()```
 
-#### proc_df():
+#### proc_df(): Process Data Frame
+
+- Pulls out dependent variable
+- Scales the data
+- Handles missing values
+  - Continuous: replaces with median
+  - Categorical: "missing" becomes new category
+
 Example 1:
 ```
 df, y, nas, mapper = proc_df(joined_samp, 'Sales', do_scale=True)
