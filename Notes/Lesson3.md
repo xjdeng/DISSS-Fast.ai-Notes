@@ -146,7 +146,7 @@ val_idx = np.flatnonzero((df.index<=datetime.datetime(2014,9,17)) &
 #### proc_df(): Process Data Frame
 
 - Pulls out dependent variable
-- Scales the data
+- do_scale: Scales the data
 - Handles missing values
   - Continuous: replaces with median
   - Categorical: "missing" becomes new category
