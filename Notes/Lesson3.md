@@ -4,6 +4,8 @@
 
 Jeremy skipped over Feature Engineering in this lesson.  To learn more, look at his first [Machine Learning video](https://www.youtube.com/watch?v=CzdWqFTmn0Y&feature=youtu.be).
 
+Also see the Fast.ai [Structured Learner solution to the Titanic challenge](https://github.com/dtylor/dtylor.github.io/blob/master/kaggle/titanic/titanic_nn.ipynb).
+
 ## Dropout
 
 First, look at a sample learner:
