@@ -169,3 +169,21 @@ val_idx = np.flatnonzero((df.index<=datetime.datetime(2014,9,17)) &
               (df.index>=datetime.datetime(2014,8,1)))
 ```
 Note: [np.flatnonzero()](https://docs.scipy.org/doc/numpy/reference/generated/numpy.flatnonzero.html) documentation
+
+## Deep Learning of Structured Data
+
+### Defining an error function
+
+Example: Root Mean Square Percentage Error (RMSPE):
+
+```
+def inv_y(a): return np.exp(a)
+def exp_rmspe(y_pred, targ):
+    targ = inv_y(targ)
+    pct_var = (targ - inv_y(y_pred))/targ
+    return math.sqrt((pct_var**2).mean())
+max_log_y = np.max(yl)
+y_range = (0, max_log_y*1.2)
+```
+As mentioned previously, taking the log is more numerically stable and ends up being more accurate.
+
