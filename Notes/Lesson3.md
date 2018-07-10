@@ -163,5 +163,9 @@ Example 2:
 df_test, _, nas, mapper = proc_df(joined_test, 'Sales', do_scale=True, skip_flds=['Id'],
                                   mapper=mapper, na_dict=nas)
 ```
-
-
+Setting the validation set:
+```
+val_idx = np.flatnonzero((df.index<=datetime.datetime(2014,9,17)) &
+              (df.index>=datetime.datetime(2014,8,1)))
+```
+Note: [np.flatnonzero()](https://docs.scipy.org/doc/numpy/reference/generated/numpy.flatnonzero.html) documentation
