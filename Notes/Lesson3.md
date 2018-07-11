@@ -224,3 +224,34 @@ y_range = (0, max_log_y*1.2)
 ```
 As mentioned previously, taking the log is more numerically stable and ends up being more accurate.
 
+### Fitting the model
+
+```
+m.fit(lr, 3, metrics=[exp_rmspe])
+```
+Notice that the error metric is specified in metrics=[....]
+
+Example Result:
+```
+[ 0.       0.02479  0.02205  0.19309]                          
+[ 1.       0.02044  0.01751  0.18301]                          
+[ 2.       0.01598  0.01571  0.17248]
+```
+
+### Summary of Steps
+
+1. Create separate lists for categorical and continuous variables. Make sure they're column names in a Pandas dataframe.
+2. Create a list of row indices you want in your validation set.
+3. Call this line of code:
+```
+md = ColumnarModelData.from_data_frame(PATH, val_idx, df, 
+         yl.astype(np.float32), cat_flds=cat_vars, bs=128, 
+         test_df=df_test)
+```
+4. Create a list of tuples of how big you want each of your embeddings to be: (# of categories , # of embeddings)
+5. Call get_learner.  Sample parameters:
+```
+m = md.get_learner(emb_szs, len(df.columns)-len(cat_vars), 0.04, 1,
+                   [1000,500], [0.001,0.01], y_range=y_range)
+```
+6. Call ```m.fit(lr, 3, metrics=[exp_rmspe])``` (or with your parameters)
