@@ -42,3 +42,31 @@ Check # of words in dataset:
 
 Tokenizers recognize pieces in your sentence.  We'll be using spacy_tok.
 
+## Creating a Field
+
+```
+TEXT = data.Field(lower=True, tokenize=spacy_tok)
+bs=64; bptt=70
+FILES = dict(train=TRN_PATH, validation=VAL_PATH, test=VAL_PATH)
+md = LanguageModelData.from_text_files(PATH, TEXT, **FILES, bs=bs, 
+                                       bptt=bptt, min_freq=10)
+```
+**PATH**: location to store data, save models, etc.
+
+**\*\*FILES**: list of all files.
+
+**bs**: batch size
+
+**bptt**: Back Prop Through Time. Max length of a sentence on GPU.
+
+**min_freq=10**: denote words that occur less than 10 times as "unknown".
+
+A note on the ``TEXT.vocab`` field: it stores unique words (aka tokens) and maps them to a unique integer id.
+```
+# 'itos': 'int-to-string' 
+TEXT.vocab.itos[:12]
+['<unk>', '<pad>', 'the', ',', '.', 'and', 'a', 'of', 'to', 'is', 'it', 'in']
+# 'stoi': 'string to int'
+TEXT.vocab.stoi['the']
+2
+```
