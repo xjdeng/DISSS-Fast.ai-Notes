@@ -170,7 +170,18 @@ val_idx = np.flatnonzero((df.index<=datetime.datetime(2014,9,17)) &
 ```
 Note: [np.flatnonzero()](https://docs.scipy.org/doc/numpy/reference/generated/numpy.flatnonzero.html) documentation
 
-## Deep Learning of Structured Data
+### Getting the Learner
+
+```
+m = md.get_learner(emb_szs, len(df.columns)-len(cat_vars),
+                   0.04, 1, [1000,500], [0.001,0.01], 
+                   y_range=y_range)
+```
+- **emb_szs**: embedding sizes (will go over later)
+- 0.04: the amount of dropout we're using
+- [1000, 500]: # of activations in each layer
+- [0.001, 0.01]: amount of dropout at later layers
+- **y_range**: defined later (in the error function section)
 
 ### Defining an error function
 
