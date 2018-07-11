@@ -183,6 +183,32 @@ m = md.get_learner(emb_szs, len(df.columns)-len(cat_vars),
 - [0.001, 0.01]: amount of dropout at later layers
 - **y_range**: defined later (in the error function section)
 
+### Embedding Sizes
+First, we need to get the sizes (cardinalities) of the categorical variables. Add 1 to account for the possibility of missing data:
+```
+cat_sz = [(c, len(joined_samp[c].cat.categories)+1) 
+             for c in cat_vars]
+```
+```
+cat_sz[0:5]
+
+[('Store', 1116),
+ ('DayOfWeek', 8),
+ ('Year', 4),
+ ('Month', 13),
+ ('Day', 32)]
+```
+Rule of thumb for embedding size: min(cardinality/2, 50)
+```
+emb_szs = [(c, min(50, (c+1)//2)) for _,c in cat_sz]
+emb_szs[0:5]
+[(1116, 50),
+ (8, 4),
+ (4, 2),
+ (13, 7),
+ (32, 16)]
+ ```
+
 ### Defining an error function
 
 Example: Root Mean Square Percentage Error (RMSPE):
