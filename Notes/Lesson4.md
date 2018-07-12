@@ -70,3 +70,13 @@ TEXT.vocab.itos[:12]
 TEXT.vocab.stoi['the']
 2
 ```
+
+## Batch Size and Back Prop Thru Time (BPTT)
+
+- All movie reviews are concatenated into one block of text
+- We then split it into 64 sections, each about 1 million long.
+- We then end up with a 1 million x 64 matrix
+- We then grab a chunk that's about ~70 x 64 and feed it to the GPU
+- Our bptt is 70 but we'll get chunks of approximately 70 on the side by 64. The # changes slightly every time to get slightl ydifferent bits of text, kinda like shuffling images in computer vision.
+- Can't randomly shuffle words because they need to be in the right order, but we can randomly move their breakpoints
+
