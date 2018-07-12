@@ -2,6 +2,8 @@
 
 [[Lecture 4 Video](http://course.fast.ai/lessons/lesson4.html)] [[IPython Notebook](https://github.com/fastai/fastai/blob/master/courses/dl1/lesson4-imdb.ipynb)]
 
+[Another article on Structured Deep Learning](https://towardsdatascience.com/structured-deep-learning-b8ca4138b848)
+
 ## Initial Setup
 
 First, import these:
