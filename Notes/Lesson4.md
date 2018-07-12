@@ -105,3 +105,15 @@ learner.reg_fn = partial(seq2seq_reg, alpha=2, beta=1)
 learner.clip=0.3
 ```
 
+## Fit the model
+
+```
+learner.fit(3e-3, 4, wds=1e-6, cycle_len=1, cycle_mult=2)
+learner.save_encoder('adam1_enc')
+learner.fit(3e-3, 4, wds=1e-6, cycle_len=10, 
+            cycle_save_name='adam3_10')
+learner.save_encoder('adam3_10_enc')
+learner.fit(3e-3, 1, wds=1e-6, cycle_len=20, 
+            cycle_save_name='adam3_20')
+learner.load_cycle('adam3_20',0)
+```
