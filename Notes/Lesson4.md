@@ -166,4 +166,60 @@ for i in range(50):
 print('...')
 . So, it wasn't quite was I was expecting, but I really liked it anyway! The best 
 film ever ! <eos> i saw this movie at the toronto international film festival . i was very impressed . i was very impressed with the acting . i was very impressed with the acting . i was surprised to see that the actors were not in the movie . ...
- ```
+```
+## Sentiment
+Goal: use pre-trained language model and fine-tune it for sentiment classification
+```
+IMDB_LABEL = data.Field(sequential=False)
+```
+The sequential=False says the text field should be tokenized.  Also, treat each review separately and not the input as one big piece of text.
+```
+splits = torchtext.datasets.IMDB.splits(TEXT, IMDB_LABEL, 'data/')
+t = splits[0].examples[0]
+t.label, ' '.join(t.text[:16])
+('pos', 'ashanti is a very 70s sort of film ( 1979 , to be precise ) .')
+```
+- **splits()**: torchtext method that creates train, text, and validation sets.
+- Look at [lang_model-arxiv.ipynb](https://github.com/fastai/fastai/blob/master/courses/dl1/lang_model-arxiv.ipynb) on how to define fastai/torchtext datasets.
+
+Create a ModelData object from torchtext splits:
+
+```
+md2 = TextData.from_splits(PATH, splits, bs)
+m3 = md2.get_model(opt_fn, 1500, bptt, emb_sz=em_sz, n_hid=nh, 
+                   n_layers=nl, dropout=0.1, dropouti=0.4,
+                   wdrop=0.5, dropoute=0.05, dropouth=0.3)
+m3.reg_fn = partial(seq2seq_reg, alpha=2, beta=1)
+m3.load_encoder(f'adam3_20_enc')
+```
+Use differential learning rates and increase max gradient for clipping.
+```
+m3.clip=25.
+lrs=np.array([1e-4,1e-3,1e-2])
+m3.freeze_to(-1)
+m3.fit(lrs/2, 1, metrics=[accuracy])
+m3.unfreeze() #Make sure the last layer is frozen
+m3.fit(lrs, 1, metrics=[accuracy], cycle_len=1)
+[ 0.       0.45074  0.28424  0.88458]
+[ 0.       0.29202  0.19023  0.92768]
+m3.fit(lrs, 7, metrics=[accuracy], cycle_len=2, 
+       cycle_save_name='imdb2')
+[ 0.       0.29053  0.18292  0.93241]                        
+[ 1.       0.24058  0.18233  0.93313]                        
+[ 2.       0.24244  0.17261  0.93714]                        
+[ 3.       0.21166  0.17143  0.93866]                        
+[ 4.       0.2062   0.17143  0.94042]                        
+[ 5.       0.18951  0.16591  0.94083]                        
+[ 6.       0.20527  0.16631  0.9393 ]                        
+[ 7.       0.17372  0.16162  0.94159]                        
+[ 8.       0.17434  0.17213  0.94063]                        
+[ 9.       0.16285  0.16073  0.94311]                        
+[ 10.        0.16327   0.17851   0.93998]                    
+[ 11.        0.15795   0.16042   0.94267]                    
+[ 12.        0.1602    0.16015   0.94199]                    
+[ 13.        0.15503   0.1624    0.94171]
+m3.load_cycle('imdb2', 4)
+accuracy(*m3.predict_with_targs())
+0.94310897435897434
+```
+See Part 2 for how to improve this further!
