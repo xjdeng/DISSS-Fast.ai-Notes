@@ -117,3 +117,53 @@ learner.fit(3e-3, 1, wds=1e-6, cycle_len=20,
             cycle_save_name='adam3_20')
 learner.load_cycle('adam3_20',0)
 ```
+## Testing the model
+Now we get to play with the language model we trained.
+```
+m=learner.model
+ss=""". So, it wasn't quite was I was expecting, but I really liked it anyway! The best"""
+s = [spacy_tok(ss)]
+t=TEXT.numericalize(s)
+' '.join(s[0])
+". So , it was n't quite was I was expecting , but I really liked it anyway ! The best"
+```
+Add the methods to test a language model:
+```
+# Set batch size to 1
+m[0].bs=1
+# Turn off dropout
+m.eval()
+# Reset hidden state
+m.reset()
+# Get predictions from model
+res,*_ = m(t)
+# Put the batch size back to what it was
+m[0].bs=bs
+```
+Get the next 10 predictions:
+```
+nexts = torch.topk(res[-1], 10)[1]
+[TEXT.vocab.itos[o] for o in to_np(nexts)]
+['film',
+ 'movie',
+ 'of',
+ 'thing',
+ 'part',
+ '<unk>',
+ 'performance',
+ 'scene',
+ ',',
+ 'actor']
+ ```
+ Generate text by itself:
+ ```
+print(ss,"\n")
+for i in range(50):
+    n=res[-1].topk(2)[1]
+    n = n[1] if n.data[0]==0 else n[0]
+    print(TEXT.vocab.itos[n.data[0]], end=' ')
+    res,*_ = m(n[0].unsqueeze(0))
+print('...')
+. So, it wasn't quite was I was expecting, but I really liked it anyway! The best 
+film ever ! <eos> i saw this movie at the toronto international film festival . i was very impressed . i was very impressed with the acting . i was very impressed with the acting . i was surprised to see that the actors were not in the movie . ...
+ ```
