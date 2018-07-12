@@ -77,6 +77,31 @@ TEXT.vocab.stoi['the']
 - We then split it into 64 sections, each about 1 million long.
 - We then end up with a 1 million x 64 matrix
 - We then grab a chunk that's about ~70 x 64 and feed it to the GPU
-- Our bptt is 70 but we'll get chunks of approximately 70 on the side by 64. The # changes slightly every time to get slightl ydifferent bits of text, kinda like shuffling images in computer vision.
+- Our bptt is 70 but we'll get chunks of approximately 70 on the side by 64. The # changes slightly every time to get slightly different bits of text, kinda like shuffling images in computer vision.
 - Can't randomly shuffle words because they need to be in the right order, but we can randomly move their breakpoints
+
+## Create the model
+
+Additional parameters:
+
+```
+em_sz = 200  # size of each embedding vector, usually 50 - 600
+nh = 500     # number of hidden activations per layer
+nl = 3       # number of layers
+```
+Optimal NLP optimizer parameters:
+```
+opt_fn = partial(optim.Adam, betas=(0.7, 0.99))
+```
+- Momentum doesn't work too well with these RNN models, so we use Adam with less momentum than the default 0.9.
+- No known way (yet) to find the optimal Dropout parameters. Increase if overfitting, decrease if underfitting.
+- Usually don't need to tune alpha, beta, or clip.
+- Will have more detailed ways to avoid overfitting in the last lesson.
+```
+learner = md.get_model(opt_fn, em_sz, nh, nl, dropouti=0.05,
+                       dropout=0.05, wdrop=0.1, dropoute=0.02, 
+                       dropouth=0.05)
+learner.reg_fn = partial(seq2seq_reg, alpha=2, beta=1)
+learner.clip=0.3
+```
 
