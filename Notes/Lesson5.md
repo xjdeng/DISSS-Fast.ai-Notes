@@ -79,3 +79,19 @@ b = T([[2., 2], [10, 10]])
 [torch.FloatTensor of size 2]
 ```
 See above: the dot product is done element wise (1*2 + 2*2 = 6 and 3\*10 + 4 \*10 = 70)
+
+## Build a Dot Product Module
+
+```
+class DotProduct (nn.Module):
+   def forward(self, u, m): return (u*m).sum(1)
+   
+model = DotProduct()
+model(a,b)
+6
+70
+[torch.FloatTensor of size 2]
+```
+No need to call model.forward(a,b) !!!
+
+
