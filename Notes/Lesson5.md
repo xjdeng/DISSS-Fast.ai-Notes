@@ -145,3 +145,48 @@ Now fit the model.  This is more like the standard PyTorch approach without SGD 
 ```
 fit(model, data, 3, opt, F.mse_loss)
 ```
+
+## Improving the model even futher
+
+We add bias which adjusts for popular movies and enthusiastic users
+
+```
+min_rating,max_rating = ratings.rating.min(),ratings.rating.max()
+min_rating,max_rating
+def get_emb(ni,nf):
+    e = nn.Embedding(ni, nf)
+    e.weight.data.uniform_(-0.01,0.01)
+    return e
+class EmbeddingDotBias(nn.Module):
+    def __init__(self, n_users, n_movies):
+        super().__init__()
+        (self.u, self.m, self.ub, self.mb) = [get_emb(*o) for o in [
+            (n_users, n_factors), (n_movies, n_factors), (n_users,1), (n_movies,1)
+        ]]
+        
+    def forward(self, cats, conts):
+        users,movies = cats[:,0],cats[:,1]
+        um = (self.u(users)* self.m(movies)).sum(1)
+        res = um + self.ub(users).squeeze() + self.mb(movies).squeeze()
+        res = F.sigmoid(res) * (max_rating-min_rating) + min_rating
+        return res
+```
+**F**: Pytorch functional, usually imported as **F**
+
+**squeeze**: PyTorch's version of [numpy's broadcasting](https://docs.scipy.org/doc/numpy-1.13.0/user/basics.broadcasting.html)
+
+If we want to squeeze ratings between 1 and 5, we put them through the sigmoid function then multiply it by 4 and add 1.
+
+Fit the model:
+
+```
+wd=2e-4
+model = EmbeddingDotBias(cf.n_users, cf.n_items).cuda()
+opt = optim.SGD(model.parameters(), 1e-1, weight_decay=wd, momentum=0.9)
+fit(model, data, 3, opt, F.mse_loss)
+[ 0.       0.85056  0.83742]                                     
+[ 1.       0.79628  0.81775]                                     
+[ 2.       0.8012   0.80994]
+```
+
+## Neural Network Version
