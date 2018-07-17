@@ -94,4 +94,54 @@ model(a,b)
 ```
 No need to call model.forward(a,b) !!!
 
+## More complex module
 
+First, we need to set up some user and movie indices which we'll later look up:
+```
+u_uniq = ratings.userId.unique() 
+user2idx = {o:i for i,o in enumerate(u_uniq)} 
+ratings.userId = ratings.userId.apply(lambda x: user2idx[x])  
+
+m_uniq = ratings.movieId.unique() 
+movie2idx = {o:i for i,o in enumerate(m_uniq)} 
+ratings.movieId = ratings.movieId.apply(lambda x: movie2idx[x])  
+
+n_users=int(ratings.userId.nunique()) 
+n_movies=int(ratings.movieId.nunique())
+```
+Note: ```{o:i for i,o in enumerate(u_uniq)}``` reverses the indices: makes a dict where you input a key and get the corresponding index!
+```
+class EmbeddingDot(nn.Module):
+    def __init__(self, n_users, n_movies):
+        super().__init__()
+        self.u = nn.Embedding(n_users, n_factors)
+        self.m = nn.Embedding(n_movies, n_factors)
+        self.u.weight.data.uniform_(0,0.05)
+        self.m.weight.data.uniform_(0,0.05)
+        
+    def forward(self, cats, conts):
+        users,movies = cats[:,0],cats[:,1]
+        u,m = self.u(users),self.m(movies)
+        return (u*m).sum(1)
+```
+[Kaiming Initialization](http://www.jefkine.com/deep/2016/08/08/initialization-of-deep-networks-case-of-rectifiers/) : Initializing weights to random numbers between 0 and 0.05.
+
+Note: we don't want to manually loop through mini-batches of users and movies or else we won't get GPU acceleration (see lines 3 and 4 of ```forward()``` above.
+
+```
+x = ratings.drop(['rating', 'timestamp'],axis=1)
+y = ratings['rating'].astype(np.float32)
+data = ColumnarModelData.from_data_frame(path, val_idxs, x, y, ['userId', 'movieId'], 64)
+
+wd=1e-5
+model = EmbeddingDot(n_users, n_movies).cuda()
+opt = optim.SGD(model.parameters(), 1e-1, weight_decay=wd, momentum=0.9)
+```
+**optim** : gets us Pytorch parameters.
+
+**model.parameters()** : gives us the weights to be updated/learned.
+
+Now fit the model.  This is more like the standard PyTorch approach without SGD with restarts or differential learning rate.
+```
+fit(model, data, 3, opt, F.mse_loss)
+```
