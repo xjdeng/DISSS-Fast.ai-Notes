@@ -68,3 +68,14 @@ How to plot using seaborn sns (built on matplotlib):
 y = learn.data.val_y
 sns.jointplot(preds, y, kind='hex', stat_func=None)
 ```
+## Python Dot Products
+
+```
+a = T([[1., 2], [3, 4]])
+b = T([[2., 2], [10, 10]])
+(a*b).sum(1)
+6
+70
+[torch.FloatTensor of size 2]
+```
+See above: the dot product is done element wise (1*2 + 2*2 = 6 and 3\*10 + 4 \*10 = 70)
