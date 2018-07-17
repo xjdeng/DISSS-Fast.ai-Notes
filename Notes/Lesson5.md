@@ -38,3 +38,33 @@ See this [Excel file](https://github.com/fastai/fastai/blob/master/courses/dl1/e
 For graphics of the Excel walkthrough, [see here](https://medium.com/@hiromi_suenaga/deep-learning-2-part-1-lesson-5-dd904506bee8).
 
 ## Simple Python version 
+
+First, create a validation set:
+
+```
+val_idxs = get_cv_idxs(len(ratings)) 
+wd = 2e-4 
+n_factors = 50
+```
+Create a model from a CSV file:
+```
+cf = CollabFilterDataset.from_csv(path, 'ratings.csv', 'userId', 'movieId', 'rating')
+```
+Get a learner and fit the model:
+```
+learn = cf.get_learner(n_factors, val_idxs, 64, opt_fn=optim.Adam)
+learn.fit(1e-2, 2, wds=wd, cycle_len=1, cycle_mult=2)
+```
+Benchmark by taking the square root of the final validation error:
+```
+sqrt(0.765)
+```
+How to get your predictions:
+```
+preds = learn.predict()
+```
+How to plot using seaborn sns (built on matplotlib):
+```
+y = learn.data.val_y
+sns.jointplot(preds, y, kind='hex', stat_func=None)
+```
