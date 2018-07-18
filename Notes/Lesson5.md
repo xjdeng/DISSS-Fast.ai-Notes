@@ -218,3 +218,14 @@ A Jupyter Widget
 [ 1.       0.8941   0.81264]                                    
 [ 2.       0.86179  0.80706]
 ```
+## The Training Loop
+
+Recall:
+```
+opt = optim.SGD(model.parameters(), 1e-1, weight_decay=wd, momentum=0.9)
+```
+Also see [gradient descent Excel sheet](https://github.com/fastai/fastai/blob/master/courses/dl1/excel/graddesc.xlsm)
+
+Use [Finite Differences](https://en.wikipedia.org/wiki/Finite_difference) to calculate the gradient when doing gradient descent.
+
+## Backpropagation
