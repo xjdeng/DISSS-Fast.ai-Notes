@@ -218,7 +218,7 @@ A Jupyter Widget
 [ 1.       0.8941   0.81264]                                    
 [ 2.       0.86179  0.80706]
 ```
-## The Training Loop
+### The Training Loop
 
 Recall:
 ```
@@ -228,4 +228,24 @@ Also see [gradient descent Excel sheet](https://github.com/fastai/fastai/blob/ma
 
 Use [Finite Differences](https://en.wikipedia.org/wiki/Finite_difference) to calculate the gradient when doing gradient descent.
 
-## Backpropagation
+### Backpropagation and Momentum
+
+[See this article on Backpropagation.](http://colah.github.io/posts/2015-08-Backprop/)
+
+To implement momentum, use linear interpolation between the current mini-batch's derivative and and the previous one.  Then step in the most recent direction.
+
+Adam is much faster but doesn't make as good final predictions, but was fixed with weight decay.  Hence, the new version is [AdamW](http://www.fast.ai/2018/07/02/adam-weight-decay/).
+
+See the [Excel Sheet](https://github.com/fastai/fastai/blob/master/courses/dl1/excel/collab_filter.xlsx) for a demo.
+
+### More on AdamW
+
+- Need to use regularizations when parameters >> data points.
+
+- Example of regularization: Dropout.
+
+- L2 regularization: penalizes large weights by adding squared weights times a weight decay multiplier to the loss.
+
+- AdamW remove weigh decay out of loss function and add it back when updating the weights.
+
+- Othwerwise large weights are penalized unless gradients vary a lot: not intended!
