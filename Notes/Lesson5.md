@@ -2,8 +2,8 @@
 
 TODO: Incorporate some of [timlee's notes and insights.](http://forums.fast.ai/t/deeplearning-lecnotes5/8416)
 
-[[Lecture 4 Video](http://course.fast.ai/lessons/lesson4.html)] [[Lesson 5 Video](http://course.fast.ai/lessons/lesson5.html)] [[IPython Notebook](https://github.com/fastai/fastai/blob/master/courses/dl1/lesson5-movielens.ipynb)]
-
+[[Lecture 4 Video](http://course.fast.ai/lessons/lesson4.html)] [[Lesson 5 Video](http://course.fast.ai/lessons/lesson5.html)] [[Lesson 6 Video](http://course.fast.ai/lessons/lesson6.html)]
+ [[IPython Notebook](https://github.com/fastai/fastai/blob/master/courses/dl1/lesson5-movielens.ipynb)] 
 In this lesson, we're using PyTorch for automatic differentiation and GPU programming but not much else like the neural network features.
 
 ## Initial Setup
@@ -254,3 +254,5 @@ See the [Excel Sheet](https://github.com/fastai/fastai/blob/master/courses/dl1/e
 - AdamW remove weigh decay out of loss function and add it back when updating the weights.
 
 - Othwerwise large weights are penalized unless gradients vary a lot: not intended!
+
+
