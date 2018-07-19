@@ -1,6 +1,10 @@
 # Lesson 5: Collaborative Filtering
 
+TODO: Incorporate some of [timlee's notes and insights.](http://forums.fast.ai/t/deeplearning-lecnotes5/8416)
+
 [[Lecture 4 Video](http://course.fast.ai/lessons/lesson4.html)] [[Lesson 5 Video](http://course.fast.ai/lessons/lesson5.html)] [[IPython Notebook](https://github.com/fastai/fastai/blob/master/courses/dl1/lesson5-movielens.ipynb)]
+
+In this lesson, we're using PyTorch for automatic differentiation and GPU programming but not much else like the neural network features.
 
 ## Initial Setup
 
@@ -82,6 +86,7 @@ See above: the dot product is done element wise (1*2 + 2*2 = 6 and 3\*10 + 4 \*1
 
 ## Build a Dot Product Module
 
+We extend the ```nn.Module``` from Pytorch
 ```
 class DotProduct (nn.Module):
    def forward(self, u, m): return (u*m).sum(1)
@@ -141,7 +146,7 @@ opt = optim.SGD(model.parameters(), 1e-1, weight_decay=wd, momentum=0.9)
 
 **model.parameters()** : gives us the weights to be updated/learned.
 
-Now fit the model.  This is more like the standard PyTorch approach without SGD with restarts or differential learning rate.
+Now fit the model.  This is more like the standard PyTorch approach without SGD with restarts or differential learning rate.  We're not using a Fast.ai learner, we're using the low-level PyTorch fit.
 ```
 fit(model, data, 3, opt, F.mse_loss)
 ```
