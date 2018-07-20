@@ -255,4 +255,25 @@ See the [Excel Sheet](https://github.com/fastai/fastai/blob/master/courses/dl1/e
 
 - Othwerwise large weights are penalized unless gradients vary a lot: not intended!
 
+## Bias
 
+To get a Pytorch model from a Learner, call ```learn.model```.```@property```:
+```
+@property
+def model(self): return self.models.model
+```
+Note: ```learn.models``` is a type of ```CollabFilterModel ``` which fast.ai implemented to allow the use of Layer Groups, for applying different learning rates to different sets of layers.
+
+To get the movie bias, we call:
+```
+movie_bias = to_np(m.ib(V(topMovieIdx)))
+```
+Note: we use the ```V()``` function to convert a "Tensor" to a "Variable".  In PyTorch 0.4, Variables will be gone and we'll be able to pass tensors into ```m.ib()``` directly.
+
+Then we get the movie ratings:
+
+```
+movie_ratings = [(b[0], movie_names[i]) for i,b in zip(topMovies,movie_bias)]
+```
+
+### Worst Movies
